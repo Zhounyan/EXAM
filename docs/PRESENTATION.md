@@ -13,7 +13,7 @@
 | 9 | **Live demo 3 - grading & reports** | Member 3 | Grade the essay, release, show the statistics report and ranking, export to a file |
 | 10 | Persistence & recovery | Member 3 | Restart the app (data is still there); corrupt `users.dat` by hand and show recovery from the backup |
 | 11 | Security | Member 1 | PBKDF2 hashing, lockout, role checks in the service layer, students only see their own released results |
-| 12 | Testing | Member 3 | `./run.sh test` (83 automated tests, fake clock); manual end-to-end tests in `docs/TESTING.md` |
+| 12 | Testing | Member 3 | `./run.sh test` (84 automated tests, fake clock); manual end-to-end tests in `docs/TESTING.md` |
 | 13 | Challenges & lessons | All | Timer in a console app, storing a copy of each question in published exams, keeping two threads from both submitting the same attempt |
 | 14 | Q&A | All | |
 

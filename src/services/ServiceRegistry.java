@@ -25,7 +25,7 @@ public class ServiceRegistry {
         this.clock = clock;
         this.auth = new AuthenticationService(store);
         this.users = new UserService(store, auth);
-        this.subjects = new SubjectService(store);
+        this.subjects = new SubjectService(store, clock);
         this.questions = new QuestionBankService(store);
         this.exams = new ExamService(store, clock);
         this.grading = new GradingService(store, clock, exams);

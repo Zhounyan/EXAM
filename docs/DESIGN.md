@@ -402,4 +402,5 @@ The full diagram is in [`docs/uml/class-diagram.md`](uml/class-diagram.md) (Merm
 - **Auto-release** (exam setting): FINAL results are shown to students as soon as they exist. Otherwise the teacher releases them.
 - **Unanswered questions** score 0, including essays. Only *answered* subjective questions wait for manual grading.
 - **Auto-submission time:** an attempt auto-submitted late (for example, found after the app was restarted) is stamped with its **deadline**, not the moment it was found.
+- **Deleting a class:** allowed when the only exams using it are completed or archived. Their attempts and results are kept unchanged and the exam lists the class as "(deleted class)". A class still used by a draft, upcoming or open exam can't be deleted until it is unassigned.
 - **Closing an exam early** sets its closing time to now. Attempts in progress are then auto-submitted (or expire, if auto-submit is off) by the same deadline check.
