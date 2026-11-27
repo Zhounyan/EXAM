@@ -4,6 +4,8 @@ import data.DataStore;
 import exceptions.AccessDeniedException;
 import exceptions.QuizSystemException;
 import exceptions.ValidationException;
+import models.Exam;
+import models.ExamStatus;
 import models.Role;
 import models.SchoolClass;
 import models.Student;
@@ -12,6 +14,8 @@ import models.Teacher;
 import models.User;
 import util.TextUtil;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +26,15 @@ public class SubjectService {
     public static final Comparator<Subject> BY_NAME = Comparator.comparing(Subject::getName, String.CASE_INSENSITIVE_ORDER);
 
     private final DataStore store;
+    private final Clock clock;
 
     public SubjectService(DataStore store) {
+        this(store, Clock.systemDefaultZone());
+    }
+
+    public SubjectService(DataStore store, Clock clock) {
         this.store = store;
+        this.clock = clock;
     }
 
     // ------------------------------------------------------------------ subjects
@@ -120,9 +130,21 @@ public class SubjectService {
     public void deleteClass(User actor, String classId) throws QuizSystemException {
         AccessControl.requireRole(actor, Role.ADMIN);
         SchoolClass c = getSchoolClass(classId);
-        long exams = store.getExams().stream().filter(e -> e.getAssignedClassIds().contains(classId)).count();
-        if (exams > 0) {
-            throw new ValidationException("Cannot delete " + c.getName() + ": it is assigned to " + exams + " exam(s).");
+        // Finished exams (completed or archived) do not block the delete: their attempts and results
+        // are kept unchanged, and the exam simply lists the class as deleted. Exams that are still a
+        // draft, upcoming or open would lose students, so they still block it.
+        LocalDateTime now = LocalDateTime.now(clock);
+        List<String> unfinished = store.getExams().stream()
+                .filter(e -> e.getAssignedClassIds().contains(classId))
+                .filter(e -> {
+                    ExamStatus st = e.getEffectiveStatus(now);
+                    return st != ExamStatus.COMPLETED && st != ExamStatus.ARCHIVED;
+                })
+                .map(Exam::getTitle).collect(Collectors.toList());
+        if (!unfinished.isEmpty()) {
+            throw new ValidationException("Cannot delete " + c.getName() + ": it is assigned to " + unfinished.size()
+                    + " exam(s) that are not finished yet (" + String.join(", ", unfinished)
+                    + "). Unassign the class from them first.");
         }
         store.removeClass(classId);
         store.saveClasses();

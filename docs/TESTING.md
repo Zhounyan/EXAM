@@ -15,7 +15,7 @@ The tests are plain Java (`test/tests/`, no JUnit needed). Each suite uses a fre
 
 ## 2. Automated test results
 
-**Result of the recorded run: 83 passed, 0 failed.**
+**Result of the recorded run: 84 passed, 0 failed** (test 84 added on 2026-11-27).
 
 ### Authentication
 
@@ -154,6 +154,7 @@ The tests are plain Java (`test/tests/`, no JUnit needed). Each suite uses a fre
 | 81 | statistics use each student's best attempt | PASS |
 | 82 | class performance report | PASS |
 | 83 | completion counts not-started and in-progress attempts | PASS |
+| 84 | a class used only by finished exams can be deleted; results stay unchanged (Examination management) | PASS |
 
 ## 3. Manual end-to-end tests (real console, scripted input)
 

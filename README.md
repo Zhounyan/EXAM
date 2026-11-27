@@ -31,7 +31,7 @@ The demo exam **"OOP Quiz 1"** has one question of each of the 9 types, a 15-min
 ### Other commands
 
 ```bash
-./run.sh test              # compile and run the 83 automated tests
+./run.sh test              # compile and run the 84 automated tests
 ./run.sh build             # compile only (classes go to ./out)
 ./run.sh --data mydata     # use a different data folder
 ```
